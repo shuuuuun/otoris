@@ -10,6 +10,8 @@ var tetris = new Tetris({
   disableKey: false,
 });
 var container = document.querySelector('.container');
+var musicButton = document.querySelector('.js-music-button');
+
 
 // init
 const cols = Math.floor((container.offsetWidth - 50) / tetris.BLOCK_SIZE);
@@ -29,10 +31,10 @@ document.addEventListener('keydown', function(evt){
 
 }, false);
 
-document.addEventListener('touchstart', function(evt){
-  evt.preventDefault();
+musicButton.addEventListener('click', () => {
   
-  tetris.moveBlock('rotate');
+    handleMethod('pauseGame');
+
 }, false);
 
 
@@ -59,6 +61,9 @@ function handleMethod(methodName) { // helper
     switch (methodName) {
     case 'freeze':
         tetris.freeze();
+        break;
+    case 'pauseGame':
+        tetris.pauseGame();
         break;
     }
 }
