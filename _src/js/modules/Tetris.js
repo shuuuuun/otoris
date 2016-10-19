@@ -10,8 +10,8 @@ export default class Tetris extends EventEmitter {
     
     var _this = this;
     
-    this.COLS = 13;
-    this.ROWS = 13;
+    this.COLS = 40;
+    this.ROWS = 15;
     this.BLOCK_SIZE = 25;
     this.NUMBER_OF_BLOCK = 4;
     this.HIDDEN_ROWS = this.NUMBER_OF_BLOCK;
@@ -21,7 +21,7 @@ export default class Tetris extends EventEmitter {
     this.NEXT_WIDTH = this.BLOCK_SIZE * this.NUMBER_OF_BLOCK;
     this.NEXT_HEIGHT = this.BLOCK_SIZE * this.NUMBER_OF_BLOCK;
     this.RENDER_INTERVAL = 30;
-    this.DEFAULT_TICK_INTERVAL = 250;
+    this.DEFAULT_TICK_INTERVAL = 500;
     this.SPEEDUP_RATE = 10;
     this.START_X = Math.floor((this.COLS - this.NUMBER_OF_BLOCK) / 2);
     this.START_Y = 0; // -this.NUMBER_OF_BLOCK;
@@ -58,7 +58,17 @@ export default class Tetris extends EventEmitter {
     this.ctx = this.cnvs.getContext('2d');
     this.cnvsNext = document.getElementById('next-canvas');
     this.ctxNext = this.cnvsNext.getContext('2d');
+
+    this.initCanvasSize();
     
+    this.setBlurEvent();
+    if (!opts.disableKey) this.setKeyEvent();
+    if (!opts.disableTouch) this.setTouchEvent();
+    
+    this.renderId = setInterval(function(){ _this.render(); }, this.RENDER_INTERVAL);
+  }
+
+  initCanvasSize() {
     this.cnvs.style.width = this.WIDTH + 'px';
     this.cnvs.style.height = this.HEIGHT + 'px';
     this.cnvs.width = this.WIDTH * 2; // for retina
@@ -72,12 +82,6 @@ export default class Tetris extends EventEmitter {
     this.cnvsNext.height = this.NEXT_HEIGHT * 2; // for retina
     this.ctxNext.scale(2,2); // for retina
     this.ctxNext.strokeStyle = this.BG_COLOR;
-    
-    this.setBlurEvent();
-    if (!opts.disableKey) this.setKeyEvent();
-    if (!opts.disableTouch) this.setTouchEvent();
-    
-    this.renderId = setInterval(function(){ _this.render(); }, this.RENDER_INTERVAL);
   }
 
   rotateWorld(sign = 1) { // 1 or -1

@@ -1,28 +1,32 @@
 import Tetris from './modules/Tetris';
 
-const KEYS = {
-  37: 'left',  // ←
-  39: 'right',  // →
-  40: 'down',  // ↓
-  38: 'rotate',  // ↑
-  32: 'rotate'  // space
-};
+const keyMap = new Map([
+    // [keyCode, methodName],
+    [13, 'freeze'], // Enter
+]);
+
 var tetris = new Tetris({
-  disableTouch: true,
-  disableKey: true,
+  disableTouch: false,
+  disableKey: false,
 });
 var container = document.querySelector('.container');
 
 // init
+const cols = Math.floor((container.offsetWidth - 50) / tetris.BLOCK_SIZE);
+tetris.COLS = cols;
+tetris.WIDTH = tetris.BLOCK_SIZE * tetris.COLS;
+tetris.initCanvasSize();
+
 document.addEventListener('keydown', function(evt){
-  console.log(evt.key, evt.keyCode, KEYS[evt.keyCode]);
-  if (typeof KEYS[evt.keyCode] === 'undefined') return;
-  evt.preventDefault();
-  
-  // console.table(tetris.board);
-  // console.table(tetris.rotateBoard());
-  
-  changeDirection(KEYS[evt.keyCode]);
+    //console.log(evt.key, evt.keyCode, keyMap.get(evt.keyCode));
+
+    const methodName = keyMap.get(evt.keyCode);
+    if (!methodName) {
+        return;
+    }
+    evt.preventDefault();
+    handleMethod(methodName);
+
 }, false);
 
 document.addEventListener('touchstart', function(evt){
@@ -31,62 +35,11 @@ document.addEventListener('touchstart', function(evt){
   tetris.moveBlock('rotate');
 }, false);
 
-window.addEventListener('devicemotion', (evt) => {
-  
-  //傾き
-  var xg = evt.accelerationIncludingGravity.x || 0;
-  var yg = evt.accelerationIncludingGravity.y || 0;
-  var zg = evt.accelerationIncludingGravity.z || 0;
-
-  var xRatio = Math.abs(xg) / 9.8;
-  var yRatio = Math.abs(yg) / 9.8;
-  var zRatio = Math.abs(zg) / 9.8;
-    
-  // console.log(xg, yg, zg);
-  var isHorizontal = Math.abs(xg) > Math.abs(yg);
-  var code = isHorizontal ? (xg > 0 ? 'right' : 'left') : (yg > 0 ? null : 'down');
-  tetris.tickInterval = 500 * (1 - (isHorizontal ? xRatio : yRatio)) + 50;
-  //console.log(isHorizontal, code, xg, yg, tetris.tickInterval);
-  changeDirection(code);
-  
-}, false);
-
-function changeDirection(code) {
-  switch (code) {
-    case 'left':
-      tetris.dropDirection = 'left';
-      break;
-    case 'right':
-      tetris.dropDirection = 'right';
-      break;
-    case 'down':
-      tetris.dropDirection = 'down';
-      break;
-    case 'rotate':
-      tetris.moveBlock('rotate');
-      break;
-  }
-}
 
 // Event
 tetris.on('gamestart', function(){
-  tetris.dropDirection = 'down';
 });
 tetris.on('newblockcreated', function(){
-  console.log(tetris.dropDirection);
-  tetris.dropDirection = 'down';
-  switch (tetris.dropDirection) {
-    case 'left':
-      //tetris.rotateWorld(-1);
-      //tetris.rotateBoard();
-      break;
-    case 'right':
-      break;
-    case 'down':
-      break;
-    case 'rotate':
-      break;
-  }
 });
 tetris.on('tick', function(){
 });
@@ -100,6 +53,15 @@ tetris.on('gamequit', function(){
 // start
 tetris.newGame();
 
+
+
+function handleMethod(methodName) { // helper
+    switch (methodName) {
+    case 'freeze':
+        tetris.freeze();
+        break;
+    }
+}
 
 function appendLink(data_url) {
   var p = document.createElement('p');
