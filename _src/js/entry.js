@@ -47,13 +47,19 @@ document.addEventListener('keydown', function(evt){
 musicButton.addEventListener('click', () => {
   
     tetris.pauseGame();
+    tetris.freeze();
     //playSound(audioBuffer);
 
     const basisHz = 442;
-    var i = 0;
-    var hz = basisHz * Math.pow(2, (1 / 12) * (i - 9));
-    playSoundHz(hz);
-
+    const maxRows = tetris.LOGICAL_ROWS;
+    tetris.board.forEach((zAry, row) => {
+        const i = maxRows - row;
+        if (zAry[0] > 0) {
+            var hz = basisHz * Math.pow(2, (1 / 12) * (i - 9));
+            playSoundHz(hz);
+        }
+    });
+    
 }, false);
 
 getAudioBuffer('/sound/se_maoudamashii_instruments_piano1_1do.mp3', function(buffer) {
