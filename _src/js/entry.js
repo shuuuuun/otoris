@@ -51,15 +51,35 @@ musicButton.addEventListener('click', () => {
     //playSound(audioBuffer);
 
     const basisHz = 442;
+    const duration = 200;
     const maxRows = tetris.LOGICAL_ROWS;
-    tetris.board.forEach((zAry, row) => {
-        const i = maxRows - row;
-        if (zAry[0] > 0) {
-            var hz = basisHz * Math.pow(2, (1 / 12) * (i - 9));
-            playSoundHz(hz);
+
+    (function loop(index) {
+        if (index >= tetris.COLS) {
+            return;
         }
-    });
-    
+        exec(index)
+            .then(() => {
+                loop(++index);
+            }, () => {
+                console.log("fail");
+            });
+    })(0);
+
+    function exec(index) {
+        const promiseList = [];
+        tetris.board.forEach((zAry, row) => {
+            const i = maxRows - row;
+            if (!zAry[index]) {
+                return;
+            }
+            var hz = basisHz * Math.pow(2, (1 / 12) * (i - 9));
+            const promise = playSoundHz(hz, duration);
+            promiseList.push(promise);
+        });
+        return Promise.all(promiseList);
+    }
+
 }, false);
 
 getAudioBuffer('/sound/se_maoudamashii_instruments_piano1_1do.mp3', function(buffer) {
@@ -111,7 +131,7 @@ function playSound(buffer) {
   source.start(0);
 }
 
-function playSoundHz(hz) {
+function playSoundHz(hz, duration) {
     var osciillator = context.createOscillator();
     var audioDestination = context.destination;
 
@@ -120,9 +140,12 @@ function playSoundHz(hz) {
     osciillator.start = osciillator.start || osciillator.noteOn; // クロスブラウザ対応
     osciillator.start();
 
-    setTimeout(function() {
-        osciillator.stop();
-    }, 500);
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            osciillator.stop();
+            resolve();
+        }, duration);
+    });
 }
 
 function appendLink(data_url) {
