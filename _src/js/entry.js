@@ -15,7 +15,6 @@ var tetris = new Tetris({
 });
 var container = document.querySelector('.container');
 var musicButton = document.querySelector('.js-music-button');
-var audioBuffer = null;
 
 
 // init
@@ -48,7 +47,6 @@ musicButton.addEventListener('click', () => {
   
     tetris.pauseGame();
     tetris.freeze();
-    //playSound(audioBuffer);
 
     const basisHz = 442;
     const duration = 200;
@@ -82,10 +80,6 @@ musicButton.addEventListener('click', () => {
 
 }, false);
 
-getAudioBuffer('/sound/se_maoudamashii_instruments_piano1_1do.mp3', function(buffer) {
-    audioBuffer = buffer;
-});
-
 
 // Event
 tetris.on('gamestart', function(){
@@ -106,31 +100,6 @@ tetris.newGame();
 
 
 // function
-function getAudioBuffer(url, fn) {  
-  var req = new XMLHttpRequest();
-  req.responseType = 'arraybuffer';
-
-  req.onreadystatechange = function() {
-    if (req.readyState === 4) {
-      if (req.status === 0 || req.status === 200) {
-        context.decodeAudioData(req.response, function(buffer) {
-          fn(buffer);
-        });
-      }
-    }
-  };
-
-  req.open('GET', url, true);
-  req.send('');
-}
-
-function playSound(buffer) {  
-  var source = context.createBufferSource();
-  source.buffer = buffer;
-  source.connect(context.destination);
-  source.start(0);
-}
-
 function playSoundHz(hz, duration) {
     var osciillator = context.createOscillator();
     var audioDestination = context.destination;
