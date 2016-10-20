@@ -5,12 +5,16 @@ const keyMap = new Map([
     [13, 'freeze'], // Enter
 ]);
 
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+var context = new AudioContext();
+
 var tetris = new Tetris({
   disableTouch: false,
   disableKey: false,
 });
 var container = document.querySelector('.container');
 var musicButton = document.querySelector('.js-music-button');
+var audioBuffer = null;
 
 
 // init
@@ -34,8 +38,13 @@ document.addEventListener('keydown', function(evt){
 musicButton.addEventListener('click', () => {
   
     handleMethod('pauseGame');
+    playSound(audioBuffer);
 
 }, false);
+
+getAudioBuffer('/sound/se_maoudamashii_instruments_piano1_1do.mp3', function(buffer) {
+    audioBuffer = buffer;
+});
 
 
 // Event
@@ -56,6 +65,31 @@ tetris.on('gamequit', function(){
 tetris.newGame();
 
 
+// function
+function getAudioBuffer(url, fn) {  
+  var req = new XMLHttpRequest();
+  req.responseType = 'arraybuffer';
+
+  req.onreadystatechange = function() {
+    if (req.readyState === 4) {
+      if (req.status === 0 || req.status === 200) {
+        context.decodeAudioData(req.response, function(buffer) {
+          fn(buffer);
+        });
+      }
+    }
+  };
+
+  req.open('GET', url, true);
+  req.send('');
+}
+
+function playSound(buffer) {  
+  var source = context.createBufferSource();
+  source.buffer = buffer;
+  source.connect(context.destination);
+  source.start(0);
+}
 
 function handleMethod(methodName) { // helper
     switch (methodName) {
