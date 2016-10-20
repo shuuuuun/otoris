@@ -61,7 +61,7 @@ export default class Tetris extends EventEmitter {
 
     this.initCanvasSize();
     
-    this.setBlurEvent();
+    if (!opts.disableFocusControls) this.setBlurEvent();
     if (!opts.disableKey) this.setKeyEvent();
     if (!opts.disableTouch) this.setTouchEvent();
     
