@@ -11,7 +11,7 @@ export default class Tetris extends EventEmitter {
     var _this = this;
     
     this.COLS = 40;
-    this.ROWS = 15;
+    this.ROWS = 16;
     this.BLOCK_SIZE = 25;
     this.NUMBER_OF_BLOCK = 4;
     this.HIDDEN_ROWS = this.NUMBER_OF_BLOCK;
