@@ -31,13 +31,21 @@ document.addEventListener('keydown', function(evt){
         return;
     }
     evt.preventDefault();
-    handleMethod(methodName);
+
+    switch (methodName) {
+    case 'freeze':
+        tetris.freeze();
+        break;
+    case 'pauseGame':
+        tetris.pauseGame();
+        break;
+    }
 
 }, false);
 
 musicButton.addEventListener('click', () => {
   
-    handleMethod('pauseGame');
+    tetris.pauseGame();
     //playSound(audioBuffer);
 
     const basisHz = 442;
@@ -108,17 +116,6 @@ function playSoundHz(hz) {
     setTimeout(function() {
         osciillator.stop();
     }, 500);
-}
-
-function handleMethod(methodName) { // helper
-    switch (methodName) {
-    case 'freeze':
-        tetris.freeze();
-        break;
-    case 'pauseGame':
-        tetris.pauseGame();
-        break;
-    }
 }
 
 function appendLink(data_url) {
