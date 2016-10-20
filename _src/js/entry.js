@@ -38,7 +38,12 @@ document.addEventListener('keydown', function(evt){
 musicButton.addEventListener('click', () => {
   
     handleMethod('pauseGame');
-    playSound(audioBuffer);
+    //playSound(audioBuffer);
+
+    const basisHz = 442;
+    var i = 0;
+    var hz = basisHz * Math.pow(2, (1 / 12) * (i - 9));
+    playSoundHz(hz);
 
 }, false);
 
@@ -89,6 +94,20 @@ function playSound(buffer) {
   source.buffer = buffer;
   source.connect(context.destination);
   source.start(0);
+}
+
+function playSoundHz(hz) {
+    var osciillator = context.createOscillator();
+    var audioDestination = context.destination;
+
+    osciillator.frequency.value = hz;
+    osciillator.connect(audioDestination);
+    osciillator.start = osciillator.start || osciillator.noteOn; // クロスブラウザ対応
+    osciillator.start();
+
+    setTimeout(function() {
+        osciillator.stop();
+    }, 500);
 }
 
 function handleMethod(methodName) { // helper
