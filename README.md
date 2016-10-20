@@ -1,5 +1,5 @@
-# GYRIS
+# OTORIS
 
-gyro + tetris mock.
+oto(sound) + tetris mock.
 
-https://shuuuuun.github.io/gyris/
+https://shuuuuun.github.io/otoris/
