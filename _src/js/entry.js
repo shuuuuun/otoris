@@ -48,6 +48,23 @@ musicButton.addEventListener('click', () => {
     tetris.pauseGame();
     tetris.freeze();
 
+    playSequence();
+
+}, false);
+
+
+// Event
+tetris.on('gamequit', function(){
+  tetris.newGame();
+});
+
+
+// start
+tetris.newGame();
+
+
+// function
+function playSequence() {
     const basisHz = 442;
     const duration = 200;
     const maxRows = tetris.LOGICAL_ROWS;
@@ -77,29 +94,8 @@ musicButton.addEventListener('click', () => {
         });
         return Promise.all(promiseList);
     }
+}
 
-}, false);
-
-
-// Event
-tetris.on('gamestart', function(){
-});
-tetris.on('newblockcreated', function(){
-});
-tetris.on('tick', function(){
-});
-tetris.on('gameOverEffect', function(){
-});
-tetris.on('gamequit', function(){
-  tetris.newGame();
-});
-
-
-// start
-tetris.newGame();
-
-
-// function
 function playSoundHz(hz, duration) {
     var osciillator = context.createOscillator();
     var audioDestination = context.destination;
