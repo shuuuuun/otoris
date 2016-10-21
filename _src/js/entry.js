@@ -72,6 +72,11 @@ tetris.newGame();
 
 
 // function
+function sleep(duration) {
+    return () => new Promise(resolve => {
+        setTimeout(resolve, duration);
+    });
+}
 function playSequence(delay) {
     const basisHz = 442;
     const duration = 200;
