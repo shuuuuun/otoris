@@ -85,7 +85,6 @@ function playSequence(delay) {
 
     (function loop(index) {
         const progress = index / tetris.COLS;
-        console.log(index, progress);
         if (index >= tetris.COLS) {
             setTimeout(() => loop(0), delay);
             return;
@@ -109,8 +108,7 @@ function playSequence(delay) {
             const promise = playSoundHz(hz, duration);
             promiseList.push(promise);
         });
-        //musicLine.style.transform = `translateX(${index}%)`;
-        musicLine.style.left = `${progress * 100}%`;
+        musicLine.style.transform = `translateX(${progress * 100}%)`;
         promiseList.push(sleep(duration)()); // duration時間は確実に待つように
         return Promise.all(promiseList);
     }
