@@ -86,6 +86,7 @@ function playSequence(delay) {
     (function loop(index) {
         const progress = index / tetris.COLS;
         if (index >= tetris.COLS) {
+            musicLine.style.transform = 'translateX(0%)';
             setTimeout(() => loop(0), delay);
             return;
         }
