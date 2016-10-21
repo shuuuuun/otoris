@@ -52,15 +52,14 @@ musicButton.addEventListener('click', () => {
     tetris.pauseGame();
     tetris.freeze();
 
-    playSequence(1000);
+    //playSequence(1000);
 
 }, false);
 
 
 // Event
 tetris.on('gamestart', function(){
-    //console.log('gamestart');
-    //playSequence();
+    playSequence(1000);
 });
 tetris.on('gamequit', function(){
   tetris.newGame();
