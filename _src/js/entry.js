@@ -43,17 +43,25 @@ document.addEventListener('keydown', function(evt){
 
 }, false);
 
+// document.addEventListener('touchstart', () => {
+//     playSequence();
+// });
+
 musicButton.addEventListener('click', () => {
   
     tetris.pauseGame();
     tetris.freeze();
 
-    playSequence();
+    playSequence(1000);
 
 }, false);
 
 
 // Event
+tetris.on('gamestart', function(){
+    //console.log('gamestart');
+    //playSequence();
+});
 tetris.on('gamequit', function(){
   tetris.newGame();
 });
@@ -64,13 +72,16 @@ tetris.newGame();
 
 
 // function
-function playSequence() {
+function playSequence(delay) {
     const basisHz = 442;
     const duration = 200;
     const maxRows = tetris.LOGICAL_ROWS;
 
     (function loop(index) {
+        console.log(index);
         if (index >= tetris.COLS) {
+            //index = 0;
+            setTimeout(() => loop(0), delay);
             return;
         }
         exec(index)
