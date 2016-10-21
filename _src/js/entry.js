@@ -108,6 +108,7 @@ function playSequence(delay) {
             const promise = playSoundHz(hz, duration);
             promiseList.push(promise);
         });
+        promiseList.push(sleep(duration)); // duration時間は確実に待つように
         return Promise.all(promiseList);
     }
 }
