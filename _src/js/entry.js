@@ -59,7 +59,7 @@ musicButton.addEventListener('click', () => {
 
 
 // Event
-tetris.on('gamestart', function(){
+tetris.once('gamestart', function(){
     playSequence(1000);
 });
 tetris.on('gamequit', function(){
