@@ -15,6 +15,7 @@ var tetris = new Tetris({
 });
 var container = document.querySelector('.container');
 var musicButton = document.querySelector('.js-music-button');
+var musicLine = document.querySelector('.js-music-line');
 
 
 // init
@@ -76,19 +77,20 @@ function sleep(duration) {
         setTimeout(resolve, duration);
     });
 }
+
 function playSequence(delay) {
     const basisHz = 442;
     const duration = 200;
     const maxRows = tetris.LOGICAL_ROWS;
 
     (function loop(index) {
-        console.log(index);
+        const progress = index / tetris.COLS;
+        console.log(index, progress);
         if (index >= tetris.COLS) {
-            //index = 0;
             setTimeout(() => loop(0), delay);
             return;
         }
-        exec(index)
+        exec(index, progress)
             .then(() => {
                 loop(++index);
             }, () => {
@@ -96,7 +98,7 @@ function playSequence(delay) {
             });
     })(0);
 
-    function exec(index) {
+    function exec(index, progress) {
         const promiseList = [];
         tetris.board.forEach((zAry, row) => {
             const i = maxRows - row;
@@ -107,6 +109,8 @@ function playSequence(delay) {
             const promise = playSoundHz(hz, duration);
             promiseList.push(promise);
         });
+        //musicLine.style.transform = `translateX(${index}%)`;
+        musicLine.style.left = `${progress * 100}%`;
         promiseList.push(sleep(duration)()); // duration時間は確実に待つように
         return Promise.all(promiseList);
     }
