@@ -48,14 +48,14 @@ document.addEventListener('keydown', function(evt){
 //     playSequence();
 // });
 
-musicButton.addEventListener('click', () => {
-  
-    tetris.pauseGame();
-    tetris.freeze();
-
-    //playSequence(1000);
-
-}, false);
+// musicButton.addEventListener('click', () => {
+//   
+//     tetris.pauseGame();
+//     tetris.freeze();
+// 
+//     //playSequence(1000);
+// 
+// }, false);
 
 
 // Event
