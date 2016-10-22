@@ -11,7 +11,7 @@ var context = new AudioContext();
 var tetris = new Tetris({
   disableTouch: false,
   disableKey: false,
-  disableFocusControls: true,
+  //disableFocusControls: true,
 });
 var container = document.querySelector('.container');
 var musicButton = document.querySelector('.js-music-button');
