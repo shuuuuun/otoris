@@ -1,8 +1,10 @@
+import Util from './modules/Util';
 import Tetris from './modules/Tetris';
 
 const keyMap = new Map([
     // [keyCode, methodName],
     [13, 'freeze'], // Enter
+    // [32, 'pauseGame'], // Space
 ]);
 
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -61,6 +63,9 @@ document.addEventListener('keydown', function(evt){
 // Event
 tetris.once('gamestart', function(){
     playSequence(1000);
+});
+tetris.on('tick', function(){
+  tetris.START_X = Util.getRandomInt(0, tetris.COLS);
 });
 tetris.on('gamequit', function(){
   tetris.newGame();
