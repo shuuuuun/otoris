@@ -1,5 +1,5 @@
 # OTORIS
 
-oto(sound) + tetris mock.
+oto(sound) + tetris mockup.
 
-https://shuuuuun.github.io/otoris/
+DEMO: https://shuuuuun.github.io/otoris/
